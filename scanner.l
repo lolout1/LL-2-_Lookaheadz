@@ -24,22 +24,22 @@ int processString();
 %}
 
 newline         //TODO
-whitespace      //TODO
+whitespace    [\t ]+  //TODO
 integer         //TODO
 character       //TODO
 
  /* String can contain any characters between the double quotes */
  /* other than a newline or unescaped doublequotes */
 */
-string       //TODO
+string      \"([^\\\n]|\\[nt\"\\])*\" //TODO
 
 
  /* If the end quote is not found in the same line the string is unterminated */
 untermstring //TODO
 
-comment         //TODO
-multlncomment   //TODO
-untermcomment   //TODO
+comment        "/*"([^*]|\*+[^*/])*\*+"/" //TODO
+multlncomment   "/*"([^*]|\*+[^*/])*\n //TODO
+untermcomment   "/*"([^*]|\*+[^*/])* //TODO
 
 identifier      //TODO
 illidentifier   //TODO: regular expression for an illegal identifier
@@ -56,21 +56,48 @@ yylineno = 1;
  /* Operators */
  /* TODO: Support all operators in mC */
 
+"++"    { updateCol(); return OPER_INC; }
+"--"    { updateCol(); return OPER_DEC; }
+"&&"    { updateCol(); return OPER_AND; }
+"||"    { updateCol(); return OPER_OR; }
+"<="    { updateCol(); return OPER_LTE; }
+">="    { updateCol(); return OPER_GTE; }
+"=="    { updateCol(); return OPER_EQ; }
+"!="    { updateCol(); return OPER_NEQ; }
+
+"+"     { updateCol(); return OPER_ADD; }
+"-"     { updateCol(); return OPER_SUB; }
+"*"     { updateCol(); return OPER_MUL; }
+"/"     { updateCol(); return OPER_DIV; }
+"%"     { updateCol(); return OPER_MOD; }
+"<"     { updateCol(); return OPER_LT; }
+">"     { updateCol(); return OPER_GT; }
+"="     { updateCol(); return OPER_ASGN; }
+"@"     { updateCol(); return OPER_AT; }
+"!"     { updateCol(); return OPER_NOT; }
+
  /* Identifiers */;
 {identifier}    //TODO
 {illidentifier} //TODO
 
  /* Constants */;
-{integer}       //TODO
-{integerlead0}  //TODO: "Integers may not have leading zeros"
-{character}     //TODO
+{integer}     { updateCol(); return INTCONST; }  //TODO
+{integerlead0} {
+    updateCol();
+    yyerror = "Illegal token";
+    return ERROR;
+}  //TODO: "Integers may not have leading zeros"
+{character}  { updateCol(); return CHARCONST; }   //TODO
 {string}        {updateCol(); return processString();}
 {untermstring}  {updateCol(); yyerror = "Unterminated string"; return ERROR;}
 
  /* Comments */
-{comment}       //TODO
-{untermcomment} //TODO
-{multlncomment} //TODO
+{comment}  { updateCol(); }     //TODO
+{untermcomment} {
+    yyerror = "Unterminated comment";
+    return ERROR;
+} //TODO
+{multlncomment} { countLines(); } //TODO
 
  /* Other */
 {newline}       //TODO
@@ -102,4 +129,33 @@ convert valid escape sequences into escaped characters
 (string[0] == '\\' and string[1] == 'n', then string[0] should be '\n')
 */
 int processString(){
+    char buffer[4096];
+    int j = 0;
+
+    for(int i = 1; i < yyleng-1; i++){
+
+        if(yytext[i] == '\\'){
+            i++;
+
+            switch(yytext[i]){
+                case 'n': buffer[j++] = '\n'; break;
+                case 't': buffer[j++] = '\t'; break;
+                case '"': buffer[j++] = '"'; break;
+                case '\\': buffer[j++] = '\\'; break;
+
+                default:
+                    yyerror =
+                    "Unrecognized escape character in String";
+                    return ERROR;
+            }
+        }
+        else{
+            buffer[j++] = yytext[i];
+        }
+    }
+
+    buffer[j] = '\0';
+    strcpy(yytext, buffer);
+
+    return STRCONST;
 }
