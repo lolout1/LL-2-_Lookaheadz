@@ -23,10 +23,10 @@ int processString();
 
 %}
 
-newline         //TODO
+newline       [\r]?[\n] //TODO
 whitespace    [\t ]+  //TODO
-integer         //TODO
-character       //TODO
+integer       0|[1-9][0-9]* //TODO
+character     \'([^\\\n]|\\[nt\"\\])\' //TODO
 
  /* String can contain any characters between the double quotes */
  /* other than a newline or unescaped doublequotes */
@@ -41,8 +41,8 @@ comment        "/*"([^*]|\*+[^*/])*\*+"/" //TODO
 multlncomment   "/*"([^*]|\*+[^*/])*\n //TODO
 untermcomment   "/*"([^*]|\*+[^*/])* //TODO
 
-identifier      //TODO
-illidentifier   //TODO: regular expression for an illegal identifier
+identifier      [A-Za-z][A-Za-z0-9]* //TODO
+illidentifier   [0-9]+[A-Za-z]+ //TODO: regular expression for an illegal identifier
 
 yylineno = 1;
 
@@ -100,9 +100,12 @@ yylineno = 1;
 {multlncomment} { countLines(); } //TODO
 
  /* Other */
-{newline}       //TODO
-{whitespace}    //TODO
-.               {return ILLEGAL_TOK;}
+{newline}   { countLines(); }    //TODO
+{whitespace}  { updateCol(); }  //TODO
+.        {
+    updateCol();
+{return ILLEGAL_TOK;}
+}
 
 %%
 
@@ -112,12 +115,15 @@ yylineno = 1;
 Implement this function to keep track of column numbers
 */
 void updateCol(){
+    yycol += yyleng;
 }
 
 /* TODO:
 Implement this function to keep track of line numbers
 */
 void countLines(){
+    yylineno++;
+    yycol = 1;
 }
 
 
