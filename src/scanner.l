@@ -122,8 +122,12 @@ void updateCol(){
 Implement this function to keep track of line numbers
 */
 void countLines(){
-    yylineno++;
-    yycol = 1;
+    // TODO(human): Implement this function.
+    // It must handle BOTH single newlines and multi-line comments.
+    // Walk through yytext (length yyleng), and for each character:
+    //   - if it's '\n': increment scanlineno, reset scancol to 1
+    //   - otherwise: increment scancol
+    // After the loop, sync yylineno = scanlineno
 }
 
 
