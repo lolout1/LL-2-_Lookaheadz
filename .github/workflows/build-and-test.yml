@@ -15,22 +15,10 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install -y flex
+      run: sudo apt-get update && sudo apt-get install -y flex libfl-dev
 
     - name: Build scanner
       run: make clean && make
 
-    - name: Run test case 0
-      run: diff <(./obj/scanner test/cases/test0.mC) test/exp/test0.exp
-
-    - name: Run test case 1
-      run: diff <(./obj/scanner test/cases/test1.mC) test/exp/test1.exp
-
-    - name: Run test case 2
-      run: diff <(./obj/scanner test/cases/test2.mC) test/exp/test2.exp
-
-    - name: Run test case 3 (custom)
-      run: diff <(./obj/scanner test/cases/test3.mC) test/exp/test3.exp
-
-    - name: Run test case 4 (custom - errors)
-      run: diff <(./obj/scanner test/cases/test4.mC) test/exp/test4.exp
+    - name: Run all tests
+      run: make test

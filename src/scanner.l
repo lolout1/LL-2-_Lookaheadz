@@ -25,6 +25,9 @@ void countLines();
 int processString();
 %}
 
+ /* dont require -lfl at link time; we handle EOF ourselves */
+%option noyywrap
+
  /* exclusive start condition for block comments */
 %x COMMENT
 
