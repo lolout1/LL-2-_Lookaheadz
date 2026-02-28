@@ -1,0 +1,135 @@
+================================================================================
+CS4318: Compiler Constructions - Project Phase 1: Scanner for mC
+================================================================================
+
+
+1. Names and Course ID
+----------------------
+
+   Abheek Pradhan    Net ID: sww35    CS4318
+   Victoria Castillo Net ID: ydn9     CS4318
+
+
+2. Group Contributions
+----------------------
+
+   Abheek Pradhan:
+     - Core scanner implementation in scanner.l
+     - Flex pattern definitions and regex design
+     - Keyword, operator, and punctuation rules
+     - Comment handling using Flex exclusive start conditions
+     - Line and column position tracking (updateCol, countLines)
+     - String constant escape processing (processString)
+     - CI/CD pipeline setup with GitHub Actions
+     - Makefile adjustments and project structure
+     - Error handling logic for all five error categories
+
+   Victoria Castillo:
+     - Variable initialization and scanner state setup
+     - Token definition header organization (tokendef.h)
+     - Test case design and expected output verification
+     - Documentation and writeup
+     - Driver program review and integration testing
+
+
+3. Test Examples
+----------------
+
+   The following two examples are different from the ones provided in the
+   project specification. They are included as test3.mC and test4.mC in
+   the test/cases/ directory.
+
+   Example 1: Full Token Coverage (test3.mC)
+   ------------------------------------------
+
+   This test exercises every category of token in a realistic mC program:
+   all eight keywords, identifiers, integer constants, a character constant,
+   a string constant with an escape sequence, all comparison operators,
+   logical operators, arithmetic operators, increment and decrement,
+   assignment, all punctuation symbols, and a block comment.
+
+   Input:
+
+      int main(void){
+          int x = 10;
+          char c = 'a';
+          string s = "hello\tworld";
+          if(x >= 5 && x <= 20){
+              x++;
+          } else {
+              x--;
+          }
+          /* this is a comment */
+          while(x != 0){
+              x = x - 1;
+          }
+          return 0;
+      }
+
+   Expected output (abbreviated):
+
+      <KEYWORD, int> : (1:1)
+      <ID, main> : (1:5)
+      <PUNCTUATION, (> : (1:9)
+      <KEYWORD, void> : (1:10)
+      <PUNCTUATION, )> : (1:14)
+      <PUNCTUATION, {> : (1:15)
+      <KEYWORD, int> : (2:5)
+      <ID, x> : (2:9)
+      <OPERATOR, => : (2:11)
+      <INTEGER, 10> : (2:13)
+      <PUNCTUATION, ;> : (2:15)
+      ...
+      (41 tokens total, all at correct line and column positions)
+      ...
+      <KEYWORD, return> : (14:5)
+      <INTEGER, 0> : (14:12)
+      <PUNCTUATION, ;> : (14:13)
+      <PUNCTUATION, }> : (15:1)
+
+
+   Example 2: Error Conditions (test4.mC)
+   ----------------------------------------
+
+   This test targets all four error-producing conditions: integers with
+   leading zeros, illegal identifiers that start with digits, unterminated
+   strings, and unterminated block comments.
+
+   Input:
+
+      007
+      3abc
+      "unterminated string
+      /* unterminated comment
+      $
+
+   Expected output:
+
+      <ERROR, Illegal token> : (1:1)
+      <ERROR, Illegal token> : (2:1)
+      <ERROR, Unterminated string> : (3:1)
+      <ERROR, Unterminated comment> : (4:1)
+
+   007 is flagged because leading zeros are not allowed in mC integers.
+   3abc is flagged because identifiers cannot start with digits. The
+   string on line 3 hits a newline before its closing quote. The comment
+   starting on line 4 reaches end-of-file without a closing */. Note
+   that the $ on line 5 is consumed inside the comment and does not
+   produce a separate error.
+
+
+4. Extra Grading Instructions
+-----------------------------
+
+   No special instructions needed. The standard Makefile is used:
+
+      make clean
+      make
+
+   This produces the scanner executable at obj/scanner. To run it:
+
+      ./obj/scanner <input_file.mC>
+
+   To run all tests automatically:
+
+      make test
