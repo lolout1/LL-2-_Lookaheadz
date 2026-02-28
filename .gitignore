@@ -3,4 +3,6 @@ obj/
 c*.md
 *.o
 lex.yy.c
+writeup.*
+*.docx
 *.py
