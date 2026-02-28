@@ -21,9 +21,6 @@ February 27, 2026
      - Comment handling using Flex exclusive start conditions
      - Line and column position tracking (updateCol, countLines)
      - String constant escape processing (processString)
-     - CI/CD pipeline setup with GitHub Actions
-     - Makefile adjustments and project structure
-     - Error handling logic for all five error categories
      - C test runner (test/test_runner.c)
 
    Victoria Castillo:
