@@ -1,0 +1,7 @@
+<STRING, " This " is\ an	ok
+string"> : (1:1)
+<ID, printf> : (2:1)
+<PUNCTUATION, (> : (2:7)
+<ERROR, Unrecognized escape character in String> : (2:32)
+<PUNCTUATION, )> : (2:35)
+<PUNCTUATION, ;> : (2:36)
