@@ -31,7 +31,7 @@ clean:
 $(OBJDIR):
 	mkdir $@
 
-test: $(BIN) test/diffwin.py test/testOutput.py
+test: $(BIN) test/testOutput.py
 	python3 test/testOutput.py \
 		--testpath test/cases --testext .mC \
 		--exppath test/exp --expext .exp \
