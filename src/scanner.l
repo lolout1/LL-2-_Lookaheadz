@@ -27,6 +27,7 @@ int processString();
 
  /* dont require -lfl at link time; we handle EOF ourselves */
 %option noyywrap
+%option noinput nounput
 
  /* exclusive start condition for block comments */
 %x COMMENT
@@ -118,7 +119,7 @@ illidentifier [0-9]+[A-Za-z]+[A-Za-z0-9]*
     return ERROR;
 }
 
- /* block comments: enter the COMMENT state on "/*", exit on "*\/" */
+ /* block comments: use exclusive start condition for robust handling */
 "/*"    {
     comment_start_line = scanlineno;
     comment_start_col = scancol;
