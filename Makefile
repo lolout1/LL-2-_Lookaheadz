@@ -31,7 +31,10 @@ clean:
 $(OBJDIR):
 	mkdir $@
 
-test: $(BIN) test/run_tests.sh
-	bash test/run_tests.sh $<
+$(OBJDIR)/test_runner: test/test_runner.c | $(OBJDIR)
+	$(CC) -std=gnu99 -O2 -o $@ $<
+
+test: $(BIN) $(OBJDIR)/test_runner
+	$(OBJDIR)/test_runner $<
 
 # vim: noexpandtab
