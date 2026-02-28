@@ -99,6 +99,9 @@ void printToken(const int tokenNum) {
     case OPER_NOT:
       printf("<OPERATOR, !> : (%d:%d)\n", yylineno, yycol);
       break;
+    case OPER_AT:
+      printf("<OPERATOR, @> : (%d:%d)\n", yylineno, yycol);
+      break;
     case LSQ_BRKT:
       printf("<PUNCTUATION, [> : (%d:%d)\n", yylineno, yycol);
       break;

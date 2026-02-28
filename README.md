@@ -38,10 +38,11 @@ Reads from the given file (or stdin if none provided) and prints each token with
 
 ## Error Detection
 
-- Illegal tokens (leading-zero integers, digit-leading identifiers, unrecognized characters)
-- Unterminated comments (EOF before `*/`)
-- Unterminated strings (newline before closing quote)
-- Unrecognized escape sequences in strings
+- Illegal token (leading-zero integers, digit-leading identifiers)
+- Unterminated comment (EOF before `*/`)
+- Unterminated string constant (EOF before closing quote)
+- String spans multiple lines (newline before closing quote)
+- Unrecognized escape character in String (invalid `\` sequence)
 
 ## Testing
 

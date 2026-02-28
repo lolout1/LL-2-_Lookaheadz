@@ -92,8 +92,8 @@ February 27, 2026
    ---------------------------------------------------
 
    This test targets all four error-producing conditions: integers with
-   leading zeros, illegal identifiers that start with digits, unterminated
-   strings, and unterminated block comments.
+   leading zeros, illegal identifiers that start with digits, strings that
+   span multiple lines, and unterminated block comments.
 
    Input:
 
@@ -107,7 +107,7 @@ February 27, 2026
 
       <ERROR, Illegal token> : (1:1)
       <ERROR, Illegal token> : (2:1)
-      <ERROR, Unterminated string> : (3:1)
+      <ERROR, String spans multiple lines> : (3:1)
       <ERROR, Unterminated comment> : (4:1)
 
    007 is flagged because leading zeros are not allowed in mC integers.
