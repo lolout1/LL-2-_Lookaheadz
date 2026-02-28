@@ -31,10 +31,7 @@ clean:
 $(OBJDIR):
 	mkdir $@
 
-test: $(BIN) test/testOutput.py
-	python3 test/testOutput.py \
-		--testpath test/cases --testext .mC \
-		--exppath test/exp --expext .exp \
-		--program $<
+test: $(BIN) test/run_tests.sh
+	bash test/run_tests.sh $<
 
 # vim: noexpandtab
