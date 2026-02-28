@@ -4,8 +4,7 @@ Lexical analyzer for the mC programming language, built with Flex for CS4318 Com
 
 ## Team
 
-**LL(2) Lookaheadz**
-Abheek Pradhan &middot; Victoria Castillo
+**LL(2) Lookaheadz** - Abheek Pradhan, Victoria Castillo
 
 ## Build
 
@@ -50,17 +49,27 @@ Reads from the given file (or stdin if none provided) and prints each token with
 make test
 ```
 
-Test inputs live in `test/cases/*.mC` with expected output in `test/exp/*.exp`.
+Compiles and runs the C test harness (`test/test_runner.c`) which executes the scanner on each `.mC` input in `test/cases/` and diffs against the expected output in `test/exp/`.
 
 ## Project Structure
 
 ```
 src/
-  scanner.l     Flex scanner specification
-  driver.c      Token printer and main entry point
-  tokendef.h    Token type definitions
+  scanner.l          Flex scanner specification
+  driver.c           Token printer / main entry point
+  tokendef.h         Token type definitions (#define constants)
 test/
-  cases/        Test input files (.mC)
-  exp/          Expected output files (.exp)
-Makefile        Build configuration
+  test_runner.c      C test harness (compiled by make test)
+  cases/             Test input files (.mC)
+    test0.mC         Keywords and whitespace across lines
+    test1.mC         Identifier vs keyword disambiguation
+    test2.mC         String escapes and bad escape detection
+    test3.mC         Full program with all token types
+    test4.mC         Error cases (leading zeros, bad ids, unterminated)
+  exp/               Expected output files (.exp)
+Makefile             Build and test configuration
+writeup.txt          Project writeup (Section 5)
+.github/
+  workflows/
+    build-and-test.yml   CI pipeline (build + test on push)
 ```

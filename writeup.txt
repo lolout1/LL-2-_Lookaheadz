@@ -1,5 +1,6 @@
 ================================================================================
 CS4318: Compiler Constructions - Project Phase 1: Scanner for mC
+February 27, 2026
 ================================================================================
 
 
@@ -14,22 +15,23 @@ CS4318: Compiler Constructions - Project Phase 1: Scanner for mC
 ----------------------
 
    Abheek Pradhan:
-     - Core scanner implementation in scanner.l
+     - Core scanner implementation (src/scanner.l)
      - Flex pattern definitions and regex design
-     - Keyword, operator, and punctuation rules
+     - Keyword, operator, and punctuation token rules
      - Comment handling using Flex exclusive start conditions
      - Line and column position tracking (updateCol, countLines)
      - String constant escape processing (processString)
      - CI/CD pipeline setup with GitHub Actions
      - Makefile adjustments and project structure
      - Error handling logic for all five error categories
+     - C test runner (test/test_runner.c)
 
    Victoria Castillo:
      - Variable initialization and scanner state setup
-     - Token definition header organization (tokendef.h)
+     - Token definition header organization (src/tokendef.h)
      - Test case design and expected output verification
      - Documentation and writeup
-     - Driver program review and integration testing
+     - Driver program review and integration testing (src/driver.c)
 
 
 3. Test Examples
@@ -37,10 +39,11 @@ CS4318: Compiler Constructions - Project Phase 1: Scanner for mC
 
    The following two examples are different from the ones provided in the
    project specification. They are included as test3.mC and test4.mC in
-   the test/cases/ directory.
+   the test/cases/ directory with expected output in test/exp/.
 
-   Example 1: Full Token Coverage (test3.mC)
-   ------------------------------------------
+
+   Example 1: Full Token Coverage (test/cases/test3.mC)
+   -----------------------------------------------------
 
    This test exercises every category of token in a realistic mC program:
    all eight keywords, identifiers, integer constants, a character constant,
@@ -88,8 +91,8 @@ CS4318: Compiler Constructions - Project Phase 1: Scanner for mC
       <PUNCTUATION, }> : (15:1)
 
 
-   Example 2: Error Conditions (test4.mC)
-   ----------------------------------------
+   Example 2: Error Conditions (test/cases/test4.mC)
+   ---------------------------------------------------
 
    This test targets all four error-producing conditions: integers with
    leading zeros, illegal identifiers that start with digits, unterminated
@@ -133,3 +136,17 @@ CS4318: Compiler Constructions - Project Phase 1: Scanner for mC
    To run all tests automatically:
 
       make test
+
+
+   Required Submission Files
+   -------------------------
+
+   All required files are present in the repository:
+
+      src/scanner.l     - Flex scanner specification (main implementation)
+      src/driver.c      - Token printer and main entry point (provided)
+      src/tokendef.h    - Token type definitions (provided)
+      Makefile          - Build configuration
+      writeup.txt       - This file
+
+   Repository: https://github.com/lolout1/LL-2-_Lookaheadz
