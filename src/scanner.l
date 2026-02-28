@@ -40,6 +40,7 @@ integerlead0  0[0-9]+
 character     \'([^\\\n\']|\\[nt\"\\])\'
 string        \"([^\\\n\"]|\\.)*\"
 untermstring  \"([^\\\n\"]|\\.)*\n
+eofstring     \"([^\\\n\"]|\\.)*
 identifier    [A-Za-z][A-Za-z0-9]*
 illidentifier [0-9]+[A-Za-z]+[A-Za-z0-9]*
 
@@ -115,7 +116,12 @@ illidentifier [0-9]+[A-Za-z]+[A-Za-z0-9]*
             scancol++;
         }
     }
-    yyerror = "Unterminated string";
+    yyerror = "String spans multiple lines";
+    return ERROR;
+}
+{eofstring}     {
+    updateCol();
+    yyerror = "Unterminated string constant";
     return ERROR;
 }
 
